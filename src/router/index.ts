@@ -7,6 +7,7 @@ import AdminDashboard from '../views/admin/AdminDashboard.vue';
 import Farmers from '../views/admin/Farmers.vue';
 import Crops from '../views/shared/Crops.vue';
 import FarmerDashboard from '../views/farmer/FarmerDashboard.vue';
+import Profile from '../views/shared/Profile.vue';
 
 const routes = [
   { path: '/login', name: 'Login', component: Login },
@@ -19,6 +20,7 @@ const routes = [
       { path: '', name: 'AdminDashboard', component: AdminDashboard },
       { path: 'farmers', name: 'Farmers', component: Farmers },
       { path: 'crops', name: 'AdminCrops', component: Crops },
+      { path: 'profile', name: 'AdminProfile', component: Profile },
     ],
   },
 
@@ -29,6 +31,7 @@ const routes = [
     children: [
       { path: '', name: 'FarmerDashboard', component: FarmerDashboard },
       { path: 'crops', name: 'FarmerCrops', component: Crops },
+      { path: 'profile', name: 'FarmerProfile', component: Profile },
     ],
   },
 
