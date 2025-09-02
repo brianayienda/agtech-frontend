@@ -1,17 +1,33 @@
 <template>
-  <div class="flex">
+  <div class="flex h-screen bg-gray-100">
     <!-- Sidebar -->
-    <aside class="w-64 bg-green-700 text-white h-screen p-4">
-      <h2 class="text-xl font-bold mb-6">Farmer Panel</h2>
-      <nav class="space-y-2">
-        <RouterLink to="/farmer" class="block p-2 rounded hover:bg-green-600">Dashboard</RouterLink>
-        <RouterLink to="/crops" class="block p-2 rounded hover:bg-green-600">My Crops</RouterLink>
+    <aside class="w-64 bg-white shadow-lg">
+      <div class="p-6 font-bold text-xl border-b">Farmer Panel</div>
+      <nav class="p-4 space-y-2">
+        <RouterLink to="/farmer" class="block p-2 rounded hover:bg-gray-200">Dashboard</RouterLink>
+        <RouterLink to="/crops" class="block p-2 rounded hover:bg-gray-200">Crops</RouterLink>
+        <RouterLink to="/farmer/profile" class="block p-2 rounded hover:bg-gray-200">Profile</RouterLink>
+        <button @click="logout" class="w-full text-left p-2 rounded bg-red-500 text-white hover:bg-red-600">
+          Logout
+        </button>
       </nav>
     </aside>
 
-    <!-- Main content -->
-    <main class="flex-1 p-6 bg-gray-100">
-      <router-view />
+    <!-- Main Content -->
+    <main class="flex-1 p-6 overflow-y-auto">
+      <RouterView />
     </main>
   </div>
 </template>
+
+<script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const logout = () => {
+  localStorage.removeItem('token')
+  localStorage.removeItem('user')
+  router.push('/login')
+}
+</script>
