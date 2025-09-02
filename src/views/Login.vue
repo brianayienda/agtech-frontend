@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup >
 import api from '@/api'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'

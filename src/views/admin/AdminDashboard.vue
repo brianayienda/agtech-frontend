@@ -18,11 +18,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup >
 import api from '@/api'
 import { onMounted, reactive } from 'vue'
-import { Chart, BarElement, CategoryScale, LinearScale } from 'chart.js'
-Chart.register(BarElement, CategoryScale, LinearScale)
+import { Chart, BarController, BarElement, CategoryScale, LinearScale } from 'chart.js'
+Chart.register(BarController, BarElement, CategoryScale, LinearScale)
 
 const stats = reactive({ totalFarmers:0, totalCrops:0, cropsPerFarmer:[] })
 onMounted(async () => {
