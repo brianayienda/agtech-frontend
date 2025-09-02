@@ -1,17 +1,37 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Dashboard from '../views/Dashboard.vue';
 import Login from '../views/Login.vue';
+import AdminLayout from '../layouts/AdminLayout.vue';
+import FarmerLayout from '../layouts/FarmerLayout.vue';
+
 import AdminDashboard from '../views/admin/AdminDashboard.vue';
-import FarmerDashboard from '../views/farmer/FarmerDashboard.vue';
 import Farmers from '../views/admin/Farmers.vue';
 import Crops from '../views/shared/Crops.vue';
+import FarmerDashboard from '../views/farmer/FarmerDashboard.vue';
 
 const routes = [
   { path: '/login', name: 'Login', component: Login },
-  { path: '/admin', name: 'admin', component: AdminDashboard, meta: { role: 'admin', auth: true } },
-  { path: '/admin/farmers', name: 'farmers', component: Farmers, meta: { role: 'admin', auth: true } },
-  { path: '/crops', name: 'crops', component: Crops, meta: { auth: true } },
-  { path: '/farmer', name: 'farmer', component: FarmerDashboard, meta: { role: 'farmer', auth: true } },
+
+  {
+    path: '/admin',
+    component: AdminLayout,
+    meta: { role: 'admin', auth: true },
+    children: [
+      { path: '', name: 'AdminDashboard', component: AdminDashboard },
+      { path: 'farmers', name: 'Farmers', component: Farmers },
+      { path: 'crops', name: 'AdminCrops', component: Crops },
+    ],
+  },
+
+  {
+    path: '/farmer',
+    component: FarmerLayout,
+    meta: { role: 'farmer', auth: true },
+    children: [
+      { path: '', name: 'FarmerDashboard', component: FarmerDashboard },
+      { path: 'crops', name: 'FarmerCrops', component: Crops },
+    ],
+  },
+
   { path: '/', redirect: '/login' },
 ];
 
@@ -20,15 +40,12 @@ const router = createRouter({
   routes,
 });
 
-// Add the beforeEach guard
+// Guard
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user') || 'null');
 
-  // Check authentication
   if (to.meta.auth && !token) return next('/login');
-
-  // Check role
   if (to.meta.role && user?.role !== to.meta.role) return next('/login');
 
   next();
