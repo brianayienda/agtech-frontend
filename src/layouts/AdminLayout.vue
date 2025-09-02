@@ -4,10 +4,10 @@
     <aside class="w-64 bg-white shadow-lg">
       <div class="p-6 font-bold text-xl border-b">Admin Panel</div>
       <nav class="p-4 space-y-2">
-        <RouterLink to="/admin" class="block p-2 rounded hover:bg-gray-200">Dashboard</RouterLink>
-        <RouterLink to="/admin/farmers" class="block p-2 rounded hover:bg-gray-200">Farmers</RouterLink>
-        <RouterLink to="/admin/crops" class="block p-2 rounded hover:bg-gray-200">Crops</RouterLink>
-        <RouterLink to="/admin/profile" class="block p-2 rounded hover:bg-gray-200">Profile</RouterLink>
+        <RouterLink to="/admin" class="block p-2 rounded hover:bg-gray-200"  :exact-active-class="'bg-gray-300 font-semibold text-blue-600'">Dashboard</RouterLink>
+        <RouterLink to="/admin/farmers" class="block p-2 rounded hover:bg-gray-200" :active-class="'bg-gray-300 font-semibold text-blue-600'">Farmers</RouterLink>
+        <RouterLink to="/admin/crops" class="block p-2 rounded hover:bg-gray-200" :active-class="'bg-gray-300 font-semibold text-blue-600'">Crops</RouterLink>
+        <RouterLink to="/admin/profile" class="block p-2 rounded hover:bg-gray-200" :active-class="'bg-gray-300 font-semibold text-blue-600'">Profile</RouterLink>
         <button @click="logout" class="w-full text-left p-2 rounded bg-red-500 text-white hover:bg-red-600">
           Logout
         </button>
