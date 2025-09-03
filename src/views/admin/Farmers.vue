@@ -7,11 +7,11 @@
       @submit.prevent="create"
       class="bg-white p-4 rounded shadow grid md:grid-cols-5 gap-2 mb-4"
     >
-      <input v-model="form.name" class="border p-2" placeholder="Name" />
-      <input v-model="form.email" class="border p-2" type="email" placeholder="Email" />
+      <input v-model="form.name" class="border p-2" placeholder="Name" required/>
+      <input v-model="form.email" class="border p-2" type="email" placeholder="Email" required/>
       <p v-if="errors.email" class="text-red-600 text-sm">{{ errors.email[0] }}</p>
 
-      <input v-model="form.phone" class="border p-2" placeholder="Phone" />
+      <input v-model="form.phone" class="border p-2" placeholder="Phone" required/>
 
       <!-- Password field with toggle -->
       <div class="relative">
@@ -20,6 +20,7 @@
           :type="showPassword ? 'text' : 'password'"
           class="border p-2 w-full"
           placeholder="Password"
+          required
         />
         <p v-if="errors.password" class="text-red-600 text-sm">{{ errors.password[0] }}</p>
 
@@ -40,6 +41,7 @@
           :type="showConfirmPassword ? 'text' : 'password'"
           class="border p-2 w-full"
           placeholder="Confirm Password"
+          required
         />
         <p v-if="errors.password_confirmation" class="text-red-600 text-sm">{{ errors.password_confirmation[0] }}</p>
 
