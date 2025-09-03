@@ -1,12 +1,12 @@
 <template>
-  <div class="flex h-screen bg-gray-100">
+  <div class="flex h-screen bg-green-100">
     <!-- Sidebar -->
     <aside
       :class="[collapsed ? 'w-20' : 'w-64', 'bg-white shadow-lg transition-all duration-300']"
     >
       <!-- Header -->
       <div class="p-6 font-bold text-xl border-b flex justify-between items-center">
-        <span v-if="!collapsed">{{ isAdmin ? 'Admin Panel' : 'Farmer Panel' }}</span>
+        <span v-if="!collapsed">Farmer Panel</span>
         <button @click="collapsed = !collapsed" class="text-gray-600 hover:text-gray-900">
           <Menu v-if="collapsed" class="w-5 h-5" />
           <X v-else class="w-5 h-5" />
