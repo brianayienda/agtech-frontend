@@ -18,13 +18,22 @@
     </div>
 
     <!-- Chart -->
-    <div class="bg-white p-4 rounded shadow mt-6">
-      <h2 class="font-semibold mb-2">Crops by Type</h2>
-      <!-- give chart container a height -->
-      <div class="h-64">
-        <canvas ref="pieCanvas"></canvas>
-      </div>
-    </div>
+  <div class="bg-white p-4 rounded shadow mt-6 relative">
+  <h2 class="font-semibold mb-2">Crops by Type</h2>
+
+  <div class="h-64">
+    <canvas ref="pieCanvas"></canvas>
+
+    <!-- Show message only if no data -->
+    <p
+      v-if="stats.byType.length === 0"
+      class="absolute inset-0 flex items-center justify-center text-gray-500 font-medium"
+    >
+      No crop data available
+    </p>
+  </div>
+</div>
+
   </div>
 </template>
 

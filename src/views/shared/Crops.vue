@@ -44,7 +44,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(c, index) in list.data" :key="c.id" class="border-t">
+      <tr v-if="list.data.length === 0">
+        <td colspan="6" class="text-center p-4 text-gray-500">
+          No crops added yet. Please add a crop above.
+        </td>
+      </tr>
+      <tr v-else v-for="(c, index) in list.data" :key="c.id" class="border-t">
         <td class="p-2">{{ index + 1 }}</td>
         <td class="p-2">{{ c.name }}</td>
         <td class="p-2">{{ c.type }}</td>
@@ -58,6 +63,7 @@
     </tbody>
   </table>
 </div>
+
 
     <!-- Edit Modal -->
     <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
