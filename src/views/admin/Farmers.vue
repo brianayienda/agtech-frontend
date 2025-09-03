@@ -137,20 +137,20 @@ const create = async () => {
   Object.keys(errors).forEach(k => delete errors[k])
   if (form.password !== form.password_confirmation) {
     errors.password_confirmation = ['Passwords do not match']
-    toast.error('Passwords do not match ❌')
+    toast.error('Passwords do not match')
     return
   }
   try {
     await api.post('/farmers', form)
     Object.assign(form, { name: '', email: '', phone: '', password: '', password_confirmation: '' })
     await load()
-    toast.success('Farmer created successfully ✅')
+    toast.success('Farmer created successfully')
   } catch (e) {
     if (e.response?.status === 422) {
       Object.assign(errors, e.response.data.errors)
-      toast.error('Validation error ❌')
+      toast.error('Validation error')
     } else {
-      toast.error('Something went wrong ❌')
+      toast.error('Something went wrong ')
     }
   }
 }

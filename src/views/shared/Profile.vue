@@ -28,15 +28,20 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import { toast } from "vue3-toastify";
 
 const form = ref({ name: "", email: "", phone: "" });
 const loading = ref(false);
 
 onMounted(async () => {
-  const { data } = await axios.get("/api/profile", {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-  });
-  form.value = data;
+  try {
+    const { data } = await axios.get("/api/profile", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+    form.value = data;
+  } catch (e) {
+    toast.error("Failed to load profile");
+  }
 });
 
 const updateProfile = async () => {
@@ -45,9 +50,9 @@ const updateProfile = async () => {
     const { data } = await axios.put("/api/profile", form.value, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     });
-    alert(data.message);
+    toast.success(data.message || "Profile updated successfully!");
   } catch (e) {
-    alert("Error updating profile");
+    toast.error("Error updating profile");
   } finally {
     loading.value = false;
   }
