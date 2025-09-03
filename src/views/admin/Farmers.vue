@@ -172,10 +172,10 @@ const update = async () => {
     })
     editModal.value = false
     await load()
-    toast.success('Farmer updated successfully ✅')
+    toast.success('Farmer updated successfully')
   } catch (e) {
     console.error(e.response?.data || e)
-    toast.error('Update failed ❌')
+    toast.error('Update failed')
   }
 }
 
@@ -188,9 +188,9 @@ const remove = async (id) => {
     await api.delete(`/farmers/${id}`)
     deleteConfirm.value = null
     await load()
-    toast.success('Farmer deleted successfully ✅')
+    toast.success('Farmer deleted successfully')
   } catch (e) {
-    toast.error('Delete failed ❌')
+    toast.error('Delete failed')
   }
 }
 </script>
