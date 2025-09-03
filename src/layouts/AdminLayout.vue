@@ -4,7 +4,7 @@
     <aside
       :class="[collapsed ? 'w-20' : 'w-64', 'bg-white shadow-lg transition-all duration-300']"
     >
-      <!-- Header -->
+      <!-- Sidebar Header -->
       <div class="p-6 font-bold text-xl border-b flex justify-between items-center">
         <span v-if="!collapsed">Admin Panel</span>
         <button @click="collapsed = !collapsed" class="text-gray-600 hover:text-gray-900">
@@ -29,7 +29,7 @@
         <!-- Logout -->
         <button
           @click="logout"
-          class="w-full text-left p-2 rounded bg-red-500 text-white hover:bg-red-600 flex items-center"
+          class="w-full text-left p-2 rounded bg-red-500 text-white hover:bg-red-600 flex items-center mt-4"
         >
           <LogOut class="w-5 h-5" />
           <span v-if="!collapsed" class="ml-2">Logout</span>
@@ -38,17 +38,29 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 p-6 overflow-y-auto">
-      <RouterView />
-    </main>
+    <div class="flex-1 flex flex-col">
+      <!-- Header -->
+      <header class="bg-white shadow p-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold">Welcome, Admin</h1>
+        <!-- Optional: add user avatar or actions -->
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="flex-1 p-6 overflow-y-auto">
+        <RouterView />
+      </main>
+
+      <!-- Footer -->
+      <!-- <footer class="bg-white shadow p-2 text-center text-gray-500">
+        &copy; 2025 My Farm Management System
+      </footer> -->
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-
-// 👉 Import Lucide icons
 import { BarChart2, Users, Leaf, User, LogOut, Menu, X } from 'lucide-vue-next'
 
 const router = useRouter()
