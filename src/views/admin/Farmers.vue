@@ -9,6 +9,8 @@
     >
       <input v-model="form.name" class="border p-2" placeholder="Name" />
       <input v-model="form.email" class="border p-2" type="email" placeholder="Email" />
+      <p v-if="errors.email" class="text-red-600 text-sm">{{ errors.email[0] }}</p>
+
       <input v-model="form.phone" class="border p-2" placeholder="Phone" />
 
       <!-- Password field with toggle -->
@@ -19,6 +21,8 @@
           class="border p-2 w-full"
           placeholder="Password"
         />
+        <p v-if="errors.password" class="text-red-600 text-sm">{{ errors.password[0] }}</p>
+
         <button
           type="button"
           @click="showPassword = !showPassword"
@@ -37,6 +41,8 @@
           class="border p-2 w-full"
           placeholder="Confirm Password"
         />
+        <p v-if="errors.password_confirmation" class="text-red-600 text-sm">{{ errors.password_confirmation[0] }}</p>
+
         <button
           type="button"
           @click="showConfirmPassword = !showConfirmPassword"
@@ -83,6 +89,9 @@ import { Eye, EyeOff } from 'lucide-vue-next'
 const list = reactive({ data: [] })
 const form = reactive({ name: '', email: '', phone: '', password: '', password_confirmation: '' })
 
+const errors = reactive({})
+
+
 // toggles for showing password
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
@@ -94,14 +103,23 @@ const load = async () => {
 onMounted(load)
 
 const create = async () => {
+  errors.value = {} // reset errors
+
   if (form.password !== form.password_confirmation) {
-    alert('Passwords do not match!')
+    errors.password_confirmation = ['Passwords do not match']
     return
   }
 
-  await api.post('/farmers', form)
-  Object.assign(form, { name: '', email: '', phone: '', password: '', password_confirmation: '' })
-  await load()
+  try {
+    await api.post('/farmers', form)
+    Object.assign(form, { name: '', email: '', phone: '', password: '', password_confirmation: '' })
+    errors.value = {}
+    await load()
+  } catch (e) {
+    if (e.response?.status === 422) {
+      Object.assign(errors, e.response.data.errors)
+    }
+  }
 }
 
 const remove = async (id) => {
