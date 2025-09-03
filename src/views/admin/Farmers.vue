@@ -2,6 +2,15 @@
   <div class="p-6">
     <h1 class="text-xl font-bold mb-4">Farmer Management</h1>
 
+    <!-- Feedback Alert -->
+    <div
+      v-if="alertMessage"
+      class="mb-4 p-3 rounded text-white"
+      :class="alertType === 'success' ? 'bg-green-600' : 'bg-red-600'"
+    >
+      {{ alertMessage }}
+    </div>
+
     <!-- Create Farmer Form -->
     <form
       @submit.prevent="create"
@@ -125,6 +134,19 @@ const editModal = ref(false)
 const editForm = reactive({ id: null, name: '', email: '', phone: '' })
 const deleteConfirm = ref(null)
 
+// Feedback state
+const alertMessage = ref('')
+const alertType = ref('success')
+let alertTimeout = null
+function showAlert(message, type = 'success') {
+  alertMessage.value = message
+  alertType.value = type
+  clearTimeout(alertTimeout)
+  alertTimeout = setTimeout(() => {
+    alertMessage.value = ''
+  }, 3000)
+}
+
 const load = async () => {
   const { data } = await api.get('/farmers')
   list.data = data.data ?? data
@@ -141,9 +163,11 @@ const create = async () => {
     await api.post('/farmers', form)
     Object.assign(form, { name: '', email: '', phone: '', password: '', password_confirmation: '' })
     await load()
+    showAlert('Farmer created successfully')
   } catch (e) {
     if (e.response?.status === 422) {
       Object.assign(errors, e.response.data.errors)
+      showAlert('Validation error', 'error')
     }
   }
 }
@@ -165,8 +189,10 @@ const update = async () => {
     })
     editModal.value = false
     await load()
+    showAlert('Farmer updated successfully')
   } catch (e) {
     console.error(e.response?.data || e)
+    showAlert('Update failed', 'error')
   }
 }
 
@@ -175,8 +201,13 @@ const confirmDelete = (id) => {
 }
 
 const remove = async (id) => {
-  await api.delete(`/farmers/${id}`)
-  deleteConfirm.value = null
-  await load()
+  try {
+    await api.delete(`/farmers/${id}`)
+    deleteConfirm.value = null
+    await load()
+    showAlert('Farmer deleted successfully')
+  } catch (e) {
+    showAlert('Delete failed', 'error')
+  }
 }
 </script>
