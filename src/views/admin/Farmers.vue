@@ -5,6 +5,7 @@
       <input v-model="form.name" class="border p-2" placeholder="Name" />
       <input v-model="form.email" class="border p-2" type="email" placeholder="Email" />
       <input v-model="form.phone" class="border p-2" placeholder="Phone" />
+      <input v-model="form.password" class="border p-2" type="password" placeholder="Password" />
       <button class="bg-green-600 text-white rounded px-4">Add Farmer</button>
     </form>
     <table class="w-full bg-white rounded shadow">
@@ -31,12 +32,12 @@ import api from '@/api'
 import { onMounted, reactive } from 'vue'
 
 const list = reactive({ data: [] })
-const form = reactive({ name:'', email:'', phone:'' })
+const form = reactive({ name:'', email:'', phone:'', password:'' })
 
 const load = async ()=> { const { data } = await api.get('/farmers'); list.data = data.data ?? data }
 onMounted(load)
 
-const create = async ()=> { await api.post('/farmers', form); Object.assign(form,{name:'',email:'',phone:''}); await load() }
+const create = async ()=> { await api.post('/farmers', form); Object.assign(form,{name:'',email:'',phone:'',password:''}); await load() }
 const remove = async (id)=> { await api.delete(`/farmers/${id}`); await load() }
 const edit = async (f)=> {
   const name = prompt('Name', f.name); if (!name) return;
