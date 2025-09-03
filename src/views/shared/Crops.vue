@@ -2,6 +2,15 @@
   <div class="p-6">
     <h1 class="text-xl font-bold mb-4">Crops</h1>
 
+    <!-- Feedback alert -->
+    <div
+      v-if="alertMessage"
+      class="mb-4 p-3 rounded text-white"
+      :class="alertType === 'success' ? 'bg-green-600' : 'bg-red-600'"
+    >
+      {{ alertMessage }}
+    </div>
+
     <!-- Add Form -->
     <form @submit.prevent="create" class="bg-white p-4 rounded shadow grid md:grid-cols-4 gap-2 mb-4">
       <input v-model="form.name" class="border p-2" placeholder="Name" />
@@ -81,6 +90,20 @@ import { onMounted, reactive, ref } from 'vue'
 const list = reactive({ data: [] })
 const form = reactive({ name:'', type:'', quantity:0 })
 
+// Feedback state
+const alertMessage = ref('')
+const alertType = ref('success')
+let alertTimeout = null
+
+function showAlert(message, type = 'success') {
+  alertMessage.value = message
+  alertType.value = type
+  clearTimeout(alertTimeout)
+  alertTimeout = setTimeout(() => {
+    alertMessage.value = ''
+  }, 3000)
+}
+
 // Modal states
 const showModal = ref(false)
 const editForm = reactive({ id:null, name:'', type:'', quantity:0 })
@@ -99,7 +122,8 @@ onMounted(load)
 const create = async ()=> { 
   await api.post('/crops', form) 
   Object.assign(form,{name:'',type:'',quantity:0}) 
-  await load() 
+  await load()
+  showAlert('Crop added successfully')
 }
 
 // Open delete confirmation
@@ -119,6 +143,7 @@ const remove = async (id)=> {
   await api.delete(`/crops/${id}`) 
   closeDeleteModal()
   await load() 
+  showAlert('Crop deleted successfully')
 }
 
 // Open edit modal
@@ -142,5 +167,6 @@ const update = async ()=> {
   })
   showModal.value = false
   await load()
+  showAlert('Crop updated successfully')
 }
 </script>
