@@ -29,7 +29,7 @@
           <td class="p-2">{{ c.farmer?.name ?? 'Me' }}</td>
           <td class="p-2">
             <button @click="openEdit(c)" class="px-2 py-1 bg-blue-600 text-white rounded">Edit</button>
-            <button @click="remove(c.id)" class="px-2 py-1 bg-red-600 text-white rounded ml-2">Delete</button>
+            <button @click="confirmDelete(c)" class="px-2 py-1 bg-red-600 text-white rounded ml-2">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -59,6 +59,18 @@
         </form>
       </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div v-if="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-lg font-bold mb-4">Confirm Delete</h2>
+        <p class="mb-4">Are you sure you want to delete <strong>{{ deleteTarget?.name }}</strong>?</p>
+        <div class="flex justify-end">
+          <button @click="closeDeleteModal" class="px-4 py-2 bg-gray-300 rounded mr-2">Cancel</button>
+          <button @click="remove(deleteTarget.id)" class="px-4 py-2 bg-red-600 text-white rounded">Delete</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -69,9 +81,12 @@ import { onMounted, reactive, ref } from 'vue'
 const list = reactive({ data: [] })
 const form = reactive({ name:'', type:'', quantity:0 })
 
-// Modal state
+// Modal states
 const showModal = ref(false)
 const editForm = reactive({ id:null, name:'', type:'', quantity:0 })
+
+const showDeleteModal = ref(false)
+const deleteTarget = ref(null)
 
 // Load crops
 const load = async ()=> { 
@@ -87,13 +102,26 @@ const create = async ()=> {
   await load() 
 }
 
+// Open delete confirmation
+const confirmDelete = (c)=> {
+  deleteTarget.value = c
+  showDeleteModal.value = true
+}
+
+// Close delete modal
+const closeDeleteModal = ()=> {
+  showDeleteModal.value = false
+  deleteTarget.value = null
+}
+
 // Delete crop
 const remove = async (id)=> { 
   await api.delete(`/crops/${id}`) 
+  closeDeleteModal()
   await load() 
 }
 
-// Open modal with crop data
+// Open edit modal
 const openEdit = (c)=> {
   editForm.id = c.id
   editForm.name = c.name
@@ -102,7 +130,7 @@ const openEdit = (c)=> {
   showModal.value = true
 }
 
-// Close modal
+// Close edit modal
 const closeModal = ()=> { showModal.value = false }
 
 // Update crop
