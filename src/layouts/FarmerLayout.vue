@@ -8,8 +8,8 @@
       <div class="p-6 font-bold text-xl border-b flex justify-between items-center">
         <span v-if="!collapsed">{{ isAdmin ? 'Admin Panel' : 'Farmer Panel' }}</span>
         <button @click="collapsed = !collapsed" class="text-gray-600 hover:text-gray-900">
-          <X v-if="!collapsed" class="w-5 h-5" />
-          <Menu v-else class="w-5 h-5" />
+          <Menu v-if="collapsed" class="w-5 h-5" />
+          <X v-else class="w-5 h-5" />
         </button>
       </div>
 
@@ -56,7 +56,7 @@ import {
   User,
   LogOut,
   Menu,
-  X,
+  X
 } from 'lucide-vue-next'
 
 const router = useRouter()
