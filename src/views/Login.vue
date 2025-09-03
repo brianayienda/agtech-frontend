@@ -1,26 +1,49 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50">
-    <div class="w-full max-w-md bg-white p-6 rounded shadow">
-      <h1 class="text-2xl font-bold mb-4">Login</h1>
+  <div class="min-h-screen flex flex-col bg-gray-50">
+    
+    <!-- Header -->
+    <header class="bg-green-600 text-white py-4 shadow">
+      <div class="max-w-4xl mx-auto px-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold">AgTech ERP</h1>
+        <nav>
+          <a href="#" class="hover:underline">Home</a>
+          <a href="#" class="ml-4 hover:underline">About</a>
+        </nav>
+      </div>
+    </header>
 
-      <!-- Login Form -->
-      <form @submit.prevent="login" class="mb-4">
-        <input v-model="email" class="w-full border p-2 mb-2" type="email" placeholder="Email" />
-        <input v-model="password" class="w-full border p-2 mb-4" type="password" placeholder="Password" />
-        <button class="w-full bg-blue-600 text-white py-2 rounded">Login</button>
-      </form>
+    <!-- Main Content -->
+    <main class="flex-1 flex items-center justify-center">
+      <div class="w-full max-w-md bg-white p-6 rounded shadow">
+        <h1 class="text-2xl font-bold mb-4">Login</h1>
 
-      <p class="text-xs mt-3 text-gray-500">Farmer? Register below</p>
+        <!-- Login Form -->
+        <form @submit.prevent="login" class="mb-4">
+          <input v-model="email" class="w-full border p-2 mb-2" type="email" placeholder="Email" />
+          <input v-model="password" class="w-full border p-2 mb-4" type="password" placeholder="Password" />
+          <button class="w-full bg-green-600 text-white py-2 rounded">Login</button>
+        </form>
 
-      <!-- Register Form -->
-      <form @submit.prevent="register" class="mt-2 grid gap-2">
-        <input v-model="name" class="border p-2" placeholder="Name" />
-        <input v-model="phone" class="border p-2" placeholder="Phone" />
-        <input v-model="rEmail" class="border p-2" type="email" placeholder="Email" />
-        <input v-model="rPassword" class="border p-2" type="password" placeholder="Password" />
-        <button class="bg-green-600 text-white py-2 rounded">Register as Farmer</button>
-      </form>
-    </div>
+        <p class="text-xs mt-3 text-gray-500">Farmer? Register below</p>
+
+        <!-- Register Form -->
+        <form @submit.prevent="register" class="mt-2 grid gap-2">
+          <input v-model="name" class="border p-2" placeholder="Name" />
+          <input v-model="phone" class="border p-2" placeholder="Phone" />
+          <input v-model="rEmail" class="border p-2" type="email" placeholder="Email" />
+          <input v-model="rPassword" class="border p-2" type="password" placeholder="Password" />
+          <button class="bg-green-600 text-white py-2 rounded">Register as Farmer</button>
+        </form>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-200 text-gray-700 py-4 mt-auto">
+      <div class="max-w-4xl mx-auto px-4 text-center text-sm">
+        &copy; 2025 AgTech ERP. All rights reserved.
+      </div>
+    </footer>
+
   </div>
 </template>
 
