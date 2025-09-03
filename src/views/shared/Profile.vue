@@ -2,7 +2,7 @@
   <div class="p-6">
     <h2 class="text-xl font-bold mb-4">My Profile</h2>
 
-    <form @submit.prevent="updateProfile" class="space-y-4">
+    <form @submit.prevent="updateProfile" class="space-y-4 bg-white p-6 rounded shadow max-w-md">
       <div>
         <label class="block text-sm font-medium">Name</label>
         <input v-model="form.name" type="text" class="border p-2 w-full rounded" />

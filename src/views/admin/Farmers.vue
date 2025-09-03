@@ -55,29 +55,47 @@
 
       <button class="bg-green-600 text-white rounded px-4">Add Farmer</button>
     </form>
+        <h1 class="text-xl font-bold mb-4">All Farmers</h1>
 
-    <!-- Farmer List -->
-    <table class="w-full bg-white rounded shadow">
-      <thead>
-        <tr class="bg-gray-50">
-          <th class="p-2 text-left">Name</th>
-          <th class="p-2">Email</th>
-          <th class="p-2">Phone</th>
-          <th class="p-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="f in list.data" :key="f.id" class="border-t">
-          <td class="p-2">{{ f.name }}</td>
-          <td class="p-2">{{ f.email }}</td>
-          <td class="p-2">{{ f.phone }}</td>
-          <td class="p-2 flex gap-2">
-            <button @click="openEdit(f)" class="px-2 py-1 bg-blue-600 text-white rounded">Edit</button>
-            <button @click="confirmDelete(f.id)" class="px-2 py-1 bg-red-600 text-white rounded">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<!-- Farmer List -->
+<div class="overflow-x-auto">
+  <table class="w-full bg-white rounded shadow table-auto">
+    <thead>
+      <tr class="bg-gray-50">
+        <th class="p-2 text-left">#</th>
+        <th class="p-2 text-left">Name</th>
+        <th class="p-2 text-left">Email</th>
+        <th class="p-2 text-left">Phone</th>
+        <th class="p-2 text-left">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(f, index) in list.data" :key="f.id" class="border-t">
+        <td class="p-2">{{ index + 1 }}</td>
+        <td class="p-2">{{ f.name }}</td>
+        <td class="p-2">{{ f.email }}</td>
+        <td class="p-2">{{ f.phone }}</td>
+        <td class="p-2 flex gap-2">
+          <button
+            @click="openEdit(f)"
+            class="px-2 py-1 bg-blue-600 text-white rounded"
+            aria-label="Edit farmer"
+          >
+            Edit
+          </button>
+          <button
+            @click="confirmDelete(f.id)"
+            class="px-2 py-1 bg-red-600 text-white rounded"
+            aria-label="Delete farmer"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
     <!-- Edit Modal -->
     <div v-if="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">

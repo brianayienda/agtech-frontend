@@ -1,39 +1,63 @@
 <template>
   <div class="p-6">
-    <h1 class="text-xl font-bold mb-4">Crops</h1>
+    <div class="mb-4">
+      <h2 class="text-lg font-bold mb-2">Add a New Crop</h2>
+    </div>
+
 
     <!-- Add Form -->
     <form @submit.prevent="create" class="bg-white p-4 rounded shadow grid md:grid-cols-4 gap-2 mb-4">
-      <input v-model="form.name" class="border p-2" placeholder="Name" />
-      <input v-model="form.type" class="border p-2" placeholder="Type" />
-      <input v-model.number="form.quantity" class="border p-2" type="number" placeholder="Qty" />
-      <button class="bg-green-600 text-white rounded px-4">Add</button>
+      <div>
+        <label class="block text-sm font-medium mb-1">Name</label>
+        <input v-model="form.name" class="border p-2 w-full" placeholder="Enter crop name" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Type</label>
+        <input v-model="form.type" class="border p-2 w-full" placeholder="Enter crop type" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Quantity</label>
+        <input v-model.number="form.quantity" type="number" class="border p-2 w-full" placeholder="Enter quantity" />
+      </div>
+
+      <div class="flex items-end">
+        <button class="bg-green-600 text-white rounded px-4 py-2 w-full">Add</button>
+      </div>
     </form>
 
+<div class="mb-4">
+  <h2 class="text-lg font-bold mb-2">Crop List</h2>
+</div>
     <!-- Table -->
-    <table class="w-full bg-white rounded shadow">
-      <thead>
-        <tr class="bg-gray-50">
-          <th class="p-2 text-left">Name</th>
-          <th class="p-2">Type</th>
-          <th class="p-2">Qty</th>
-          <th class="p-2">Farmer</th>
-          <th class="p-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="c in list.data" :key="c.id" class="border-t">
-          <td class="p-2">{{ c.name }}</td>
-          <td class="p-2">{{ c.type }}</td>
-          <td class="p-2">{{ c.quantity }}</td>
-          <td class="p-2">{{ c.farmer?.name ?? 'Me' }}</td>
-          <td class="p-2">
-            <button @click="openEdit(c)" class="px-2 py-1 bg-blue-600 text-white rounded">Edit</button>
-            <button @click="confirmDelete(c)" class="px-2 py-1 bg-red-600 text-white rounded ml-2">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+ <div class="overflow-x-auto">
+  <table class="w-full bg-white rounded shadow table-auto">
+    <thead>
+      <tr class="bg-gray-50">
+        <th class="p-2 text-left">#</th>
+        <th class="p-2 text-left">Name</th>
+        <th class="p-2 text-left">Type</th>
+        <th class="p-2 text-left">Qty</th>
+        <th class="p-2 text-left">Farmer</th>
+        <th class="p-2 text-left">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(c, index) in list.data" :key="c.id" class="border-t">
+        <td class="p-2">{{ index + 1 }}</td>
+        <td class="p-2">{{ c.name }}</td>
+        <td class="p-2">{{ c.type }}</td>
+        <td class="p-2">{{ c.quantity }}</td>
+        <td class="p-2">{{ c.farmer?.name ?? 'Me' }}</td>
+        <td class="p-2 flex gap-2">
+          <button @click="openEdit(c)" class="px-2 py-1 bg-blue-600 text-white rounded">Edit</button>
+          <button @click="confirmDelete(c)" class="px-2 py-1 bg-red-600 text-white rounded ml-2">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
     <!-- Edit Modal -->
     <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -81,52 +105,52 @@ import { toast } from 'vue3-toastify'
 
 // Data
 const list = reactive({ data: [] })
-const form = reactive({ name:'', type:'', quantity:0 })
+const form = reactive({ name: '', type: '', quantity: 0 })
 
 // Modal states
 const showModal = ref(false)
-const editForm = reactive({ id:null, name:'', type:'', quantity:0 })
+const editForm = reactive({ id: null, name: '', type: '', quantity: 0 })
 
 const showDeleteModal = ref(false)
 const deleteTarget = ref(null)
 
 // Load crops
-const load = async ()=> { 
-  const { data } = await api.get('/crops') 
-  list.data = data.data ?? data 
+const load = async () => {
+  const { data } = await api.get('/crops')
+  list.data = data.data ?? data
 }
 onMounted(load)
 
 // Create crop
-const create = async ()=> { 
-  await api.post('/crops', form) 
-  Object.assign(form,{name:'',type:'',quantity:0}) 
+const create = async () => {
+  await api.post('/crops', form)
+  Object.assign(form, { name: '', type: '', quantity: 0 })
   await load()
   toast.success('Crop added successfully!')
 }
 
 // Open delete confirmation
-const confirmDelete = (c)=> {
+const confirmDelete = (c) => {
   deleteTarget.value = c
   showDeleteModal.value = true
 }
 
 // Close delete modal
-const closeDeleteModal = ()=> {
+const closeDeleteModal = () => {
   showDeleteModal.value = false
   deleteTarget.value = null
 }
 
 // Delete crop
-const remove = async (id)=> { 
-  await api.delete(`/crops/${id}`) 
+const remove = async (id) => {
+  await api.delete(`/crops/${id}`)
   closeDeleteModal()
-  await load() 
+  await load()
   toast.success('Crop deleted successfully!')
 }
 
 // Open edit modal
-const openEdit = (c)=> {
+const openEdit = (c) => {
   editForm.id = c.id
   editForm.name = c.name
   editForm.type = c.type
@@ -135,14 +159,14 @@ const openEdit = (c)=> {
 }
 
 // Close edit modal
-const closeModal = ()=> { showModal.value = false }
+const closeModal = () => { showModal.value = false }
 
 // Update crop
-const update = async ()=> {
-  await api.put(`/crops/${editForm.id}`, { 
-    name: editForm.name, 
+const update = async () => {
+  await api.put(`/crops/${editForm.id}`, {
+    name: editForm.name,
     type: editForm.type,
-    quantity: editForm.quantity 
+    quantity: editForm.quantity
   })
   showModal.value = false
   await load()
