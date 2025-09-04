@@ -32,21 +32,36 @@ import { toast } from 'vue3-toastify'
 
 const profile = ref({ name: '', email: '', phone: '' })
 const loading = ref(false)
+const userType = ref('farmer') // will detect based on dashboard response
 
 onMounted(async () => {
   try {
-    // Fetch dashboard stats and reuse the profile data
-    const { data } = await api.get('/dashboard/farmer')
-    profile.value = data.profile || {}
+    // Try fetching farmer dashboard
+    let response
+    try {
+      response = await api.get('/dashboard/farmer')
+      profile.value = response.data.profile || {}
+      userType.value = 'farmer'
+      return
+    } catch (err) {
+      if (err.response && err.response.status !== 403) throw err
+    }
+
+    // Try admin dashboard
+    response = await api.get('/dashboard/admin')
+    profile.value = response.data.profile || {}
+    userType.value = 'admin'
   } catch (err) {
     console.error(err)
-    toast.error('Failed to load profile from dashboard')
+    toast.error('Failed to load profile')
   }
 })
+
 
 const updateProfile = async () => {
   loading.value = true
   try {
+    // Update via /profile for both user types
     const { data } = await api.put('/profile', profile.value)
     toast.success(data.message || 'Profile updated successfully!')
   } catch (err) {

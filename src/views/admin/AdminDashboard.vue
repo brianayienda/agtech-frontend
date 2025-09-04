@@ -16,6 +16,8 @@
       <canvas id="bar"></canvas>
     </div>
   </div>
+
+  
 </template>
 <script setup>
 import api from '@/api'
